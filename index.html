@@ -7,35 +7,215 @@
 <meta name="description" content="原创一战像素战壕策略游戏。调动分队、管理补给，夺取最后一道堑壕。">
 <title>灰线 1917 · 战壕战术</title>
 <style>
-:root{color-scheme:dark;--bg:#171a15;--panel:#23271d;--line:#444738;--ink:#e7e1c9;--muted:#b1b19a;--gold:#e6bd72;--green:#b6c58a;--red:#e98c70}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0,#303022 0,transparent 65%),var(--bg);color:var(--ink);font:15px/1.45 system-ui,"Microsoft YaHei",sans-serif}button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}button:disabled{cursor:default;opacity:.47}.shell{max-width:1200px;margin:auto;padding:0 22px 22px}.top{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:12px}.brand-mark{display:grid;place-items:center;width:40px;height:40px;border:1px solid #786c4c;color:var(--gold);background:#333124;font:24px monospace}.brand h1{margin:0;font-size:24px;letter-spacing:.11em}.brand h1 span{color:var(--gold);font:700 23px monospace}.top-tools{display:flex;gap:7px}.quiet,.lane,.segment{border:1px solid var(--line);background:#22251d;padding:7px 11px}.quiet:hover,.lane:hover,.segment:not(:disabled):hover{border-color:var(--gold)}.campaign{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:13px 0}.segment{text-align:left;min-width:0;display:flex;align-items:center;gap:9px}.segment small{color:var(--muted);font:700 12px monospace}.segment.current{border-color:#867248;background:#3a3323;color:var(--gold)}.segment.current small{color:var(--gold)}.brief{display:flex;justify-content:space-between;align-items:center;gap:14px;margin:0 0 9px}.brief h2{margin:0;font-size:19px}.brief p{margin:2px 0 0;color:var(--muted);font-size:13px}.stats{display:flex;gap:7px;flex:0 0 auto}.stat{padding:5px 9px;background:#292d22;border:1px solid var(--line);text-align:center;min-width:65px;color:var(--muted);font-size:12px}.stat b{display:block;font:700 17px monospace;color:var(--gold)}.stat:nth-child(2) b{color:var(--green)}.stat:last-child b{color:var(--red)}.field{position:relative;border:1px solid #756b50;overflow:hidden;background:#5a553a;box-shadow:0 12px 28px #0004}canvas{display:block;width:100%;height:auto;image-rendering:pixelated;touch-action:manipulation}.field-label{position:absolute;top:8px;padding:3px 7px;background:#15180fdf;color:var(--green);font-size:12px;pointer-events:none}.field-label.left{left:8px}.field-label.right{right:8px;color:#f1b49c}.overlay{position:absolute;inset:0;display:grid;place-items:center;background:#14160fa6;padding:10px}.overlay[hidden]{display:none}.paper{background:#22251bee;border:1px solid #b19a63;box-shadow:0 0 0 4px #1b1d16b0,0 12px 32px #0007;width:min(355px,95%);text-align:center;padding:17px 22px}.paper strong{display:block;font-size:clamp(22px,4vw,34px);letter-spacing:.1em;color:var(--gold)}.paper p{margin:5px 0 12px;color:var(--ink);font-size:14px}.primary{border:1px solid #f1c982;background:var(--gold);color:#211b10;padding:7px 19px;font-weight:800}.primary:hover{background:#f6d394}.orders{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:9px 0}.lanes{display:flex;gap:5px}.lane{padding:5px 10px}.lane[aria-pressed=true]{background:#3c432b;border-color:#909970;color:#dfedb7}.report{color:var(--ink);margin:0;text-align:right;font-size:13px}.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.card{background:linear-gradient(150deg,#2c3023,#22251c);border:1px solid var(--line);text-align:left;padding:8px 9px;min-width:0}.card:hover:not(:disabled){border-color:var(--gold);background:#383724}.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;gap:2px}.card-icon{width:24px;height:18px;image-rendering:pixelated}.key{font:700 11px monospace;color:var(--muted);border:1px solid var(--line);padding:1px 4px}.card b{display:block;font-size:14px}.card small{font-size:12px;color:var(--muted)}.card .price{color:var(--gold);font:700 12px monospace}.footer{padding-top:10px;color:var(--muted);font-size:12px}dialog{width:min(440px,calc(100% - 24px));background:#27291e;color:var(--ink);border:1px solid #9d895a;padding:19px}dialog::backdrop{background:#10120ddd}dialog h2{margin:0 0 7px;color:var(--gold)}dialog ul{padding-left:1.3em;margin:8px 0 15px}dialog li{margin:6px 0}@media(max-width:600px){.shell{padding:0 9px 12px}.top{min-height:57px}.brand{gap:7px}.brand-mark{width:31px;height:31px;font-size:19px}.brand h1,.brand h1 span{font-size:18px}.top-tools{gap:4px}.quiet{padding:5px;font-size:12px}.campaign{margin:8px 0;gap:4px}.segment{padding:5px;gap:4px;font-size:12px}.segment small{font-size:10px}.brief{align-items:flex-start;gap:4px}.brief h2{font-size:15px}.brief p,.stat{font-size:10px}.stats{gap:3px}.stat{padding:3px;min-width:37px}.stat b{font-size:13px}.field canvas{height:235px}.field-label{font-size:10px}.paper{padding:9px 12px}.paper p{font-size:12px}.orders{align-items:flex-start}.lane{padding:5px;font-size:12px;white-space:nowrap}.report{font-size:11px}.cards{grid-template-columns:repeat(3,1fr);gap:5px}.card{padding:5px 7px}.key{display:none}.card b,.card small{font-size:12px}.footer{font-size:11px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+:root {
+  color-scheme: dark;
+  --bg: #141711;
+  --panel: #23281d;
+  --border: #414735;
+  --ink: #f1e7ce;
+  --muted: #c0bba2;
+  --gold: #efc375;
+  --green: #cedb9e;
+  --red: #f09d83;
+  font-family: system-ui, "Microsoft YaHei", sans-serif;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-width: 260px;
+  color: var(--ink);
+  background: radial-gradient(ellipse at 40% 0, #373022, transparent 70%), var(--bg);
+  font-size: 15px;
+  line-height: 1.4;
+}
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+button:disabled { cursor: default; opacity: .48; }
+.shell {
+  width: min(100%, 1230px);
+  margin: auto;
+  padding: max(8px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+}
+.top, .brand, .top-tools, .brief { display: flex; align-items: center; }
+.top { justify-content: space-between; gap: 8px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+.brand { gap: 10px; white-space: nowrap; }
+.brand-mark {
+  display: grid; place-items: center; width: 37px; height: 37px;
+  border: 1px solid #83734c; background: #3a3324; color: var(--gold); font: 25px monospace;
+}
+.brand h1 { margin: 0; font-size: 23px; letter-spacing: .08em; }
+.brand h1 span { color: var(--gold); font-family: monospace; }
+.top-tools { gap: 5px; }
+.quiet, .lane, .segment {
+  min-height: 44px; border: 1px solid var(--border); background: #22271d; padding: 4px 10px;
+}
+.quiet:hover, .lane:hover, .segment:not(:disabled):hover { border-color: var(--gold); }
+#fullscreen { display: inline-flex; align-items: center; gap: 6px; color: var(--gold); border-color: #8d794f; white-space: nowrap; }
+.fullscreen-icon { width: 15px; height: 15px; display: inline-grid; place-items: center; font: 19px/1 monospace; }
+.campaign { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin: 9px 0; }
+.segment { display: flex; align-items: center; gap: 7px; text-align: left; }
+.segment small { color: var(--muted); font: 700 12px monospace; }
+.segment.current { border-color: #9b8250; background: #3a3323; color: var(--gold); }
+.segment.current small { color: var(--gold); }
+.brief { justify-content: space-between; gap: 8px; margin: 0 0 8px; }
+.brief h2 { margin: 0; font-size: 18px; }
+.brief p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 4px; }
+.stat {
+  display: grid; align-content: center; min-width: 59px; padding: 4px 6px; text-align: center;
+  border: 1px solid var(--border); background: #292e21; color: var(--muted); font-size: 12px;
+  white-space: nowrap;
+}
+.stat b { font: 700 18px/1.1 monospace; color: var(--gold); }
+.stat:nth-child(2) b, .stat:nth-child(4) b { color: var(--green); }
+.stat:nth-child(3) b { color: var(--red); }
+.battle { display: grid; gap: 8px; min-height: 0; min-width: 0; }
+.field {
+  position: relative; display: grid; align-items: center; min-width: 0; min-height: 0;
+  overflow: hidden; border: 1px solid #827452; background: #23241a; box-shadow: 0 6px 22px #0005;
+}
+canvas { display: block; image-rendering: pixelated; }
+#world { display: block; width: 100%; height: auto; touch-action: manipulation; }
+.field-label {
+  position: absolute; top: 4px; padding: 2px 6px; background: #171b13eb;
+  color: var(--green); font-size: 12px; pointer-events: none;
+}
+.field-label.left { left: 4px; }
+.field-label.right { right: 4px; color: #f4ad92; }
+.overlay { position: absolute; inset: 0; display: grid; place-items: center; padding: 6px; background: #14160f93; }
+.overlay[hidden] { display: none; }
+.paper {
+  width: min(355px, 95%); padding: 12px 16px; text-align: center; background: #23271aee;
+  border: 1px solid #bc9f65; box-shadow: 0 0 0 3px #161b11d0, 0 8px 20px #0007;
+}
+.paper strong { display: block; font-size: clamp(21px, 3vw, 34px); letter-spacing: .07em; color: var(--gold); }
+.paper p { margin: 2px 0 7px; font-size: 13px; }
+.primary { min-height: 44px; border: 1px solid #f1c982; background: var(--gold); color: #241c10; padding: 5px 15px; font-weight: 800; }
+.primary:hover { background: #f6d394; }
+.command { display: grid; align-content: start; gap: 7px; min-width: 0; }
+.orders { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+.lanes { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 5px; }
+.lane { padding: 4px 10px; white-space: nowrap; }
+.lane[aria-pressed=true] { background: #424a2e; border-color: #afbb83; color: #eff7c9; }
+.report { color: var(--muted); margin: 0; text-align: right; font-size: 13px; }
+.cards { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 6px; }
+.card {
+  min-width: 0; min-height: 68px; padding: 5px 7px; text-align: left;
+  background: linear-gradient(145deg, #303626, #22271c); border: 1px solid var(--border);
+}
+.card:hover:not(:disabled), .card:active:not(:disabled) { border-color: var(--gold); background: #413823; }
+.card-head { display: flex; justify-content: space-between; align-items: center; gap: 2px; margin-bottom: 2px; }
+.card-icon { width: 27px; height: 20px; }
+.key { font: 700 11px monospace; color: var(--muted); border: 1px solid var(--border); padding: 1px 4px; }
+.card b { display: block; font-size: 14px; }
+.card small { font-size: 12px; color: var(--muted); }
+.card .price { color: var(--gold); font: 700 13px monospace; }
+.footer { padding-top: 8px; color: var(--muted); font-size: 12px; }
+.touch-hint { display: none; }
+dialog { width: min(440px, calc(100% - 24px)); background: #262b1e; color: var(--ink); border: 1px solid #ad9461; padding: 17px; }
+dialog::backdrop { background: #0f130dd9; }
+dialog h2 { margin: 0 0 7px; color: var(--gold); }
+dialog ul { padding-left: 1.3em; margin: 8px 0 14px; }
+dialog li { margin: 5px 0; }
+body.expanded { overflow: hidden; }
+.shell:fullscreen { width: 100%; background: var(--bg); overflow: auto; }
+body.expanded .shell { position: fixed; inset: 0; width: 100%; overflow: auto; background: var(--bg); }
+:is(.shell:fullscreen, body.expanded .shell) #world { max-height: 61vh; max-height: 61dvh; object-fit: contain; }
+@media (pointer: coarse) {
+  .keyboard-hint, .key { display: none; }
+  .touch-hint { display: inline; }
+}
+@media (max-width: 620px) {
+  .shell { padding-right: max(8px, env(safe-area-inset-right)); padding-left: max(8px, env(safe-area-inset-left)); }
+  .top { flex-wrap: wrap; }
+  .brand { gap: 5px; }
+  .brand h1 { font-size: 18px; }
+  .brand-mark { display: none; }
+  .top-tools { gap: 3px; }
+  .quiet { padding: 4px 6px; font-size: 12px; }
+  .campaign { gap: 4px; margin: 7px 0; }
+  .segment { padding: 3px 5px; gap: 4px; font-size: 12px; }
+  .segment small { font-size: 10px; }
+  .brief { display: grid; grid-template-columns: minmax(0,1fr); gap: 4px; }
+  .brief h2 { font-size: 15px; }
+  .brief p { font-size: 12px; }
+  .stat { padding: 4px 2px; font-size: 11px; min-width: 0; }
+  .stat b { font-size: 16px; }
+  .field { min-height: 128px; }
+  .field-label { font-size: 11px; }
+  .orders { display: grid; }
+  .report { text-align: left; font-size: 12px; }
+  .cards { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 4px; }
+  .card { min-height: 60px; padding: 4px 6px; }
+  .card b { font-size: 13px; }
+  .card small { font-size: 11px; }
+  .keyboard-hint { display: none; }
+  .touch-hint { display: inline; }
+}
+@media (orientation: landscape) and (max-height: 560px) and (min-width: 530px) {
+  .shell { padding-top: max(4px,env(safe-area-inset-top)); padding-bottom: max(4px,env(safe-area-inset-bottom)); }
+  .top { padding-bottom: 3px; }
+  .brand h1 { font-size: 17px; }
+  .brand-mark { display: none; }
+  .quiet, .segment { min-height: 39px; padding: 3px 8px; font-size: 12px; }
+  .campaign { margin: 4px 0; }
+  .brief { display: flex; margin-bottom: 4px; }
+  .brief h2 { font-size: 14px; }
+  .brief p { display: none; }
+  .stat { min-width: 44px; padding: 2px 5px; font-size: 10px; }
+  .stat b { font-size: 14px; }
+  .battle { grid-template-columns: minmax(0,1fr) clamp(156px,26vw,245px); gap: 5px; }
+  .field { min-height: 0; }
+  .orders { display: grid; gap: 2px; }
+  .lane { min-height: 42px; padding: 2px; font-size: 12px; }
+  .report { min-height: 16px; text-align: left; font-size: 11px; }
+  .command { gap: 3px; }
+  .cards { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 3px; }
+  .card { min-height: 43px; padding: 2px 5px; }
+  .card b { font-size: 12px; }
+  .card small, .key, .footer { display: none; }
+  .card-icon { width: 20px; height: 15px; }
+  :is(.shell:fullscreen, body.expanded .shell) #world { max-height: calc(100dvh - 124px); }
+}
 </style>
 </head>
 <body>
-<main class="shell">
+<main class="shell" id="game-shell">
 <header class="top">
 <div class="brand"><span class="brand-mark" aria-hidden="true">╬</span><h1>灰线 <span>1917</span></h1></div>
-<div class="top-tools"><button class="quiet" id="sound" aria-pressed="false">静音</button><button class="quiet" id="pause" disabled>暂停</button><button class="quiet" id="help">玩法</button></div>
+<div class="top-tools"><button class="quiet" id="fullscreen" aria-pressed="false"><span class="fullscreen-icon" aria-hidden="true">⛶</span><span id="fullscreen-label">全屏</span></button><button class="quiet" id="sound" aria-pressed="false">音效</button><button class="quiet" id="pause" disabled>暂停</button><button class="quiet" id="help">玩法</button></div>
 </header>
 <nav class="campaign" id="campaign" aria-label="战役关卡"></nav>
 <section class="brief" aria-label="战况">
 <div><h2 id="mission"></h2><p id="objective"></p></div>
-<div class="stats"><div class="stat"><b id="supply">0</b>补给</div><div class="stat"><b id="ally">0</b>我方防线</div><div class="stat"><b id="enemy">0</b>敌方防线</div></div>
+<div class="stats"><div class="stat"><b id="supply">0</b>补给</div><div class="stat"><b id="ally">0</b>我方</div><div class="stat"><b id="enemy">0</b>敌方</div><div class="stat"><b id="sectors">0/3</b>哨点</div></div>
 </section>
+<div class="battle">
 <section class="field" aria-label="战场">
 <canvas id="world" width="480" height="192" aria-label="三路战场。点击战场或下方路线按钮切换部署路线。"></canvas>
 <span class="field-label left">我方战壕</span><span class="field-label right">敌方战壕</span>
 <div class="overlay" id="overlay"><div class="paper"><strong id="overlay-title"></strong><p id="overlay-copy"></p><button class="primary" id="action">进入战场</button></div></div>
 </section>
+<div class="command">
 <div class="orders"><div class="lanes" aria-label="部署路线"></div><p class="report" id="report" role="status"></p></div>
 <div class="cards" id="cards" aria-label="军令"></div>
-<div class="footer">键盘 1–5 下令 · Q / W / E 切换路线 · 空格暂停</div>
-</main>
+</div>
+</div>
+<div class="footer"><span class="keyboard-hint">1–5 下令 · Q / W / E 选路线 · 空格暂停 · F 全屏</span><span class="touch-hint">点路线和兵种卡下令 · 横屏时军令移到战场右侧</span></div>
 <dialog id="rules"><h2>战地军令</h2><ul>
 <li>选择上、中、下路，再点兵种卡部署。补给随时间恢复。</li>
+<li>单位占住哨点后可为己方提供补给。敌军进入范围会阻止夺取。</li>
 <li>压制会让步兵停下来。机枪适合拖住敌人，迫击炮能攻击聚集的敌军。</li>
 <li>坦克更耐打。步兵和坦克抵达右侧壕沟后会持续削弱敌方防线。</li>
 <li>弹幕打击所选路线的敌方前线。敌军抵达左侧也会削弱你的防线。</li>
 </ul><form method="dialog"><button class="primary">返回战场</button></form></dialog>
+</main>
 <script>
 'use strict';
 const $ = id => document.getElementById(id);
@@ -48,6 +228,7 @@ const terrain = ground.getContext('2d');
 const lanes = [47, 101, 155];
 const laneNames = ['上路', '中路', '下路'];
 const bases = [30, 450];
+const sectorLayouts = [[202,240,278],[260,208,245],[220,286,255]];
 const missions = [
   {name:'白桦隘口', objective:'夺取白桦林尽头的敌方壕沟', terrain:['#6a6243','#92835a','#504d35'], weather:'clear', hp:75, cadence:8.5, supply:5.2, enemy:['rifle','rifle','mg']},
   {name:'淹没的农庄', objective:'攻过被雨水切开的农田', terrain:['#585c44','#79856c','#414939'], weather:'rain', hp:96, cadence:7, supply:5.5, enemy:['rifle','mg','rifle','mortar']},
@@ -69,6 +250,36 @@ try { unlocked = Math.max(0, Math.min(2, Number(localStorage.getItem('greyline-u
 let game, level = 0, last = 0, audio, resumeAfterHelp = false;
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let muted = true;
+let fullscreenPending = false;
+const shell = $('game-shell');
+
+function syncFullscreen() {
+  const active = document.fullscreenElement === shell || document.body.classList.contains('expanded');
+  $('fullscreen').setAttribute('aria-pressed', String(active));
+  setText('fullscreen-label', active ? '退出全屏' : '全屏');
+}
+async function toggleFullscreen() {
+  if (fullscreenPending) return;
+  const pageExpanded = document.body.classList;
+  fullscreenPending = true;
+  try {
+    if (document.fullscreenElement === shell) {
+      await document.exitFullscreen();
+    } else if (pageExpanded.contains('expanded')) {
+      pageExpanded.remove('expanded');
+    } else if (document.fullscreenEnabled && shell.requestFullscreen) {
+      try { await shell.requestFullscreen(); }
+      catch { pageExpanded.add('expanded'); }
+    } else {
+      pageExpanded.add('expanded');
+    }
+  } finally {
+    fullscreenPending = false;
+    syncFullscreen();
+  }
+}
+$('fullscreen').addEventListener('click', toggleFullscreen);
+document.addEventListener('fullscreenchange', syncFullscreen);
 
 function rect(g, x, y, w, h, color) {
   g.fillStyle = color;
@@ -172,6 +383,7 @@ function reset(n, state='ready') {
   game = {
     state, time:0, selected:1, supply:90, hp:[100,missions[n].hp],
     units:[], fx:[], strikes:[], cooldowns:{}, nextWave:5.5, waves:0,
+    sectors:sectorLayouts[n].map(x=>({x, control:0})),
     report:'选择路线，部署第一支分队。'
   };
   makeUnit('rifle',0,1,49);
@@ -226,9 +438,24 @@ function burst(x,lane,team,damage,radius) {
   }
   playSound('blast');
 }
+function updateSectors(dt) {
+  for (const [lane, sector] of game.sectors.entries()) {
+    let presence=0;
+    let team=-1;
+    for (const unit of game.units) {
+      if (unit.hp<=0 || unit.lane!==lane || Math.abs(unit.x-sector.x)>33) continue;
+      if (team!==-1 && team!==unit.team) { presence=0; break; }
+      team=unit.team;
+      presence=team===0?1:-1;
+    }
+    sector.control=Math.max(-1,Math.min(1,sector.control+presence*dt*.63));
+  }
+}
 function advance(dt) {
   game.time+=dt;
-  game.supply=Math.min(150,game.supply+dt*missions[level].supply);
+  updateSectors(dt);
+  const bonuses=game.sectors.filter(s=>s.control===1).length;
+  game.supply=Math.min(150,game.supply+dt*(missions[level].supply+bonuses*.85));
   if (game.time>=game.nextWave) {
     const m=missions[level], wave=game.waves++;
     const lane=(wave*2+level)%3;
@@ -308,6 +535,17 @@ function draw() {
   for (let x=41;x<439;x+=7) {
     rect(ctx,x,y-13,3,1,'#e3d6a477');rect(ctx,x,y+12,3,1,'#e3d6a477');
   }
+  for (const [index, sector] of game.sectors.entries()) {
+    const markY=lanes[index]+12;
+    const color=sector.control===1?'#d5e59f':sector.control===-1?'#e7a489':'#e4c686';
+    rect(ctx,sector.x-14,markY-4,28,5,'#302b20');
+    rect(ctx,sector.x-12,markY-5,24,2,'#9d8253');
+    rect(ctx,sector.x-11,markY-2,22,2,'#685b3b');
+    const progress=Math.round(22*Math.abs(sector.control));
+    if (progress) rect(ctx,sector.x-11,markY-2,progress,2,sector.control<0?'#d79279':'#bac982');
+    rect(ctx,sector.x,markY-12,1,8,'#c9b283');
+    rect(ctx,sector.x+1,markY-12,5,3,color);
+  }
   const unitSlots=new Map();
   for (const u of game.units) {
     const slot=u.team*3+u.lane, offset=unitSlots.get(slot)||0;
@@ -353,6 +591,7 @@ function refresh() {
   setText('objective',m.objective);
   setText('supply',Math.floor(supply));
   setText('ally',Math.max(0,hp[0])+'%');
+  setText('sectors',game.sectors.filter(s=>s.control===1).length+'/3');
   setText('enemy',Math.max(0,Math.ceil(hp[1]/m.hp*100))+'%');
   setText('report',report);
   $('pause').disabled=!['playing','paused'].includes(state);
@@ -433,7 +672,7 @@ $('sound').onclick=()=>{
   }
   muted=!muted;
   $('sound').setAttribute('aria-pressed',String(!muted));
-  setText('sound',muted?'静音':'音效开启');
+  setText('sound',muted?'音效':'静音');
 };
 $('help').onclick=()=>{
   resumeAfterHelp=game.state==='playing';
@@ -446,12 +685,21 @@ $('rules').addEventListener('close',()=>{
 });
 field.addEventListener('pointerdown',event=>{
   const box=field.getBoundingClientRect();
-  const position=(event.clientY-box.top)*field.height/box.height;
+  const scale=Math.min(box.width/field.width,box.height/field.height);
+  const imageTop=box.top+(box.height-field.height*scale)/2;
+  const position=(event.clientY-imageTop)/scale;
+  if(position<0 || position>field.height) return;
   const closest=lanes.reduce((best,y,i)=>Math.abs(y-position)<Math.abs(lanes[best]-position)?i:best,0);
   chooseLane(closest);
 });
 document.addEventListener('keydown',e=>{
   if(e.repeat||e.altKey||e.ctrlKey||e.metaKey||$('rules').open) return;
+  if(e.key==='Escape' && document.body.classList.contains('expanded')) {
+    document.body.classList.remove('expanded');
+    syncFullscreen();
+    return;
+  }
+  if(e.key.toLowerCase()==='f') { toggleFullscreen(); return; }
   const route=['q','w','e'].indexOf(e.key.toLowerCase());
   if(route>=0) chooseLane(route);
   if(/^[1-5]$/.test(e.key)) deploy(keys[Number(e.key)-1]);
@@ -468,7 +716,7 @@ function frame(now) {
   const dt=Math.min(.05,(now-last)/1000);
   last=now;
   if(game.state==='playing') advance(dt);
-  if(game.state!=='playing'||now-lastRefresh>100) {
+  if(now-lastRefresh>100) {
     refresh();
     lastRefresh=now;
   }
