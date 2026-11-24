@@ -1,6 +1,6 @@
 # 灰线 1917
 
-[在线游玩](https://greyline-1917-wzkcjwdnb666.wzk1976992717.chatgpt.site)
+GitHub Pages 启用后，可在 [游戏页面](https://lfafua.github.io/wzkcjwdnb666/) 直接游玩。
 
 原创一战题材像素策略游戏。调动上、中、下三路分队，使用步兵班、重机枪、迫击炮、早期坦克和炮兵弹幕，夺取敌方防线。完成白桦隘口、淹没的农庄、黑脊高地三场战役。
 
