@@ -107,6 +107,7 @@ function start(){
     armies:[chosen,enemy],difficulty,hq:[450,450],supply:[120,100],
     flags:battlefields[mapIndex].points.map(([x,y])=>({x,y,control:0,owner:-1,contested:false})),
     waveAt:[9.8,7.3,5.8][difficulty],wave:0,serial:0,
+    skillReadyAt:new Float64Array(7),skillTarget:null,
     rolls:randomFrom(Date.now()^battlefields[mapIndex].seed)
   };
   camera={x:W/2,y:H/2,zoom:1};$('zoom-label').textContent='1×';
@@ -122,7 +123,7 @@ function start(){
     spawn(team,1,H*.49,true);
   }
   say('自由推进开始。控制据点能加快补给，摧毁敌方指挥所即可获胜。');
-  setCommand('charge',false);updateHud();fit();
+  setupSkillWheel();setCommand('charge',false);updateHud();fit();
 }
 $('start').onclick=start;
 
@@ -186,12 +187,13 @@ function explosion(x,y,team,spec,power){
     const d=Math.hypot(u.x-x,u.y-y);
     if(d>spec.blast)continue;
     const terrain=cover[game.terrain.tiles[cell(u.x,u.y)]];
-    u.hp-=spec.damage*power*(1-.55*d/spec.blast)*(1-.50*terrain);
-    u.suppression+=spec.pressure;
+    u.hp-=spec.damage*power*skillGuard(u)*(1-.55*d/spec.blast)*(1-.50*terrain);
+    u.suppression+=spec.pressure*skillGuard(u);
   }
 }
 function shoot(u,target,spec,country){
-  u.reload=spec.interval*(1+(game.rolls()-.5)*.26);
+  const attack=u.skill?.until>game.time?u.skill:null;
+  u.reload=spec.interval*(attack?.interval??1)*(1+(game.rolls()-.5)*.26);
   u.heading=target.x>=u.x?1:-1;
   u.aim=.21;
   if(spec.blast){
@@ -199,8 +201,8 @@ function shoot(u,target,spec,country){
   } else {
     const terrain=cover[game.terrain.tiles[cell(target.x,target.y)]];
     const armor=roles[target.key].armor&&!spec.armor&&!spec.antiArmor?.32:1;
-    target.hp-=spec.damage*armor*(1-terrain)*(u.index>=2?country.support:1)*(1-Math.min(.35,u.suppression*.17));
-    target.suppression+=spec.pressure;
+    target.hp-=spec.damage*armor*(attack?.damage??1)*skillGuard(target)*(1-terrain)*(u.index>=2?country.support:1)*(1-Math.min(.35,u.suppression*.17));
+    target.suppression+=spec.pressure*skillGuard(target);
     game.fx.push({type:'trace',x:u.x,y:u.y-3,tx:target.x,ty:target.y-3,age:0,life:.13});
   }
 }
@@ -260,7 +262,7 @@ function updateUnit(u,dt){
   const hillBonus=game.armies[u.team]==='it'&&terrain!==0&&!spec.armor?1.21:1;
   const pressure=spec.armor?1:Math.max(.19,1-u.suppression*.48/nation.resolve);
   const slowdown=firing?u.order==='charge'?.55:.37:1;
-  u.walking=!isHolding&&!(attacking&&u.order==='charge')&&moveUnit(u,spec.speed*ground*hillBonus*pressure*slowdown,dt);
+  u.walking=!isHolding&&!(attacking&&u.order==='charge')&&moveUnit(u,spec.speed*ground*hillBonus*pressure*slowdown*(u.skill?.until>game.time?u.skill.speed??1:1),dt);
 }
 function updateFlags(dt){
   for(const [i,p] of game.flags.entries()){
@@ -320,6 +322,7 @@ function advance(dt){
 }
 function finish(){
   game.phase='finished';
+  closeSkills();cancelSkillAim();
   const baseDiff=game.hq[0]-game.hq[1];
   const pointDiff=game.flags.reduce((sum,p)=>sum+(p.owner===0?1:p.owner===1?-1:0),0);
   const won=baseDiff||pointDiff;
@@ -332,6 +335,8 @@ function pause(){
   if(!game||game.phase==='finished')return;
   game.phase=game.phase==='running'?'paused':'running';
   const paused=game.phase==='paused';
+  if(paused){closeSkills();cancelSkillAim();}
+  updateSkills();
   $('pause').textContent=paused?'继续':'暂停';
   $('result-title').textContent='战斗暂停';
   $('result-copy').textContent='继续作战后，双方分队恢复推进。';
@@ -414,6 +419,11 @@ function release(e,apply){
     }
   }else{
     const p=pixelToWorld(drag.end.x,drag.end.y);
+    if(game.skillTarget!==null){
+      const x=(drag.end.x-view.left)/view.scale,y=(drag.end.y-view.top)/view.scale;
+      if(x>=0&&x<=W&&y>=0&&y<=H)aimSkill(p);
+      return;
+    }
     const radius=clamp(13/view.scale,12,37);
     let found=null,best=radius;
     for(const u of game.units){
@@ -434,6 +444,7 @@ field.addEventListener('pointercancel',e=>release(e,false));
 field.addEventListener('contextmenu',e=>{
   if(game?.phase!=='running')return;
   e.preventDefault();
+  if(game.skillTarget!==null){cancelSkillAim();return;}
   const p=localPoint(e);
   issue(pixelToWorld(p.x,p.y),'move');
 });
@@ -456,6 +467,7 @@ function issue(p,order=command){
 }
 function setCommand(value,apply=true){
   command=value;
+  if(apply&&game&&game.skillTarget!==null)cancelSkillAim();
   for(const button of document.querySelectorAll('[data-order]'))button.setAttribute('aria-pressed',String(button.dataset.order===value));
   $('order-hint').textContent={
     move:'点地图指定目的地，分队到达后停驻。',
@@ -497,11 +509,13 @@ async function fullscreen(){
 $('fullscreen').onclick=fullscreen;
 document.addEventListener('fullscreenchange',fullscreenButton);
 document.addEventListener('keydown',e=>{
-  if(e.repeat||e.ctrlKey||e.metaKey||e.altKey||$('archive').open||e.target instanceof HTMLSelectElement)return;
+  if(e.repeat||e.ctrlKey||e.metaKey||e.altKey||$('archive').open||$('skill-wheel').open||e.target instanceof HTMLSelectElement)return;
   const key=e.key.toLowerCase();
   if(key==='f'){fullscreen();return;}
   if(key==='escape'&&document.body.classList.contains('expanded')){document.body.classList.remove('expanded');fullscreenButton();}
   if(!game)return;
+  if(key==='v'){openSkills();return;}
+  if(key==='escape'&&game.skillTarget!==null){cancelSkillAim();return;}
   if(e.code==='Space'&&!(e.target instanceof HTMLButtonElement)){e.preventDefault();pause();}
   if(/^[1-7]$/.test(key))recruit(Number(key)-1);
   if(key==='q')$('all').click();
@@ -561,6 +575,7 @@ function drawUnit(g,u,t){
     box(g,tip,-5,4,3,'#f0bc69');box(g,tip+1,-6,2,5,'#ffecad');
   }
   g.restore();
+  if(u.skill?.until>t)box(g,x-6,y-16,3,3,'#f2c16f');
   if(u.team===0)box(g,x-1,y-15,3,2,'#c6d5a0');
   else box(g,x-1,y-15,3,2,'#df997b');
   if(u.selected||u.hp<spec.hp*.55){
@@ -577,6 +592,7 @@ function drawPoint(p,i){
   if(p.control)box(ctx,x-12,y+14,24*Math.abs(p.control),2,p.control>0?'#b4d698':'#e39177');
 }
 function drawFX(f){
+  if(f.age<0)return;
   const ratio=clamp(f.age/f.life,0,1);
   if(f.type==='trace'){
     const x=f.x+(f.tx-f.x)*ratio,y=f.y+(f.ty-f.y)*ratio;
@@ -615,6 +631,7 @@ function draw(){
     box(ctx,b.x-18,b.y+21,36,3,'#24241c');
     box(ctx,b.x-18,b.y+21,36*game.hq[team]/450,2,team===0?'#bed49a':'#e3967e');
   }
+  drawSkillRange(ctx);
   for(const u of [...game.units].sort((a,b)=>a.y-b.y))drawUnit(ctx,u,game.time);
   for(const f of game.fx)drawFX(f);
   if(!reduceMotion){
@@ -635,6 +652,7 @@ function updateHud(){
   const text=(id,value)=>{const el=$(id),next=String(value);if(el.textContent!==next)el.textContent=next;};
   const selected=game.units.filter(u=>u.team===0&&u.selected).length;
   text('selection-count',selected?selected+' 个单位':'未选中');
+  updateSkills();
   text('supply',Math.floor(game.supply[0]));text('points',game.flags.filter(p=>p.owner===0).length+'/3');
   const time=Math.floor(game.time);text('clock',Math.floor(time/60)+':'+String(time%60).padStart(2,'0'));
   for(const [team,hq] of game.hq.entries()){

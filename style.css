@@ -13,3 +13,60 @@ dialog{width:min(780px,calc(100% - 20px));max-height:88dvh;overflow:auto;backgro
 .setup-order label{grid-template-columns:65px minmax(0,1fr)}.setup-order select{width:100%;min-width:0}#archive-nation{max-width:100%}
 @media(max-width:720px){.setup-columns,.battle-area{grid-template-columns:minmax(0,1fr)}}
 @media(orientation:landscape) and (max-height:530px) and (min-width:565px){.battle-area{grid-template-columns:minmax(0,1fr) minmax(210px,31%)}}
+
+/* Tactical abilities sit on the battlefield and stay reachable in landscape. */
+.skill-tools{
+  position:absolute;left:5px;bottom:5px;display:flex;align-items:center;gap:4px;
+}
+.skill-tools button,.aim-banner button{
+  min-height:40px;border-color:#928054;background:#282b1fef;color:#f5d497;font-weight:700;
+}
+.skill-tools small{
+  display:inline-block;min-width:1.3em;margin-left:2px;color:#dcddaf;font:700 12px monospace;
+}
+.aim-banner{
+  position:absolute;z-index:1;top:33px;left:5px;right:5px;display:flex;
+  justify-content:space-between;align-items:center;gap:5px;padding:3px 4px 3px 8px;
+  background:#26291ef5;border:1px solid #b29863;color:#f9dfad;font-size:12px;
+}
+.aim-banner button{min-height:32px;padding:3px 8px;flex:none}
+#skill-wheel{
+  width:min(395px,calc(100vw - 12px));max-height:calc(100dvh - 12px);padding:9px;
+}
+.skills-head{display:flex;align-items:flex-start;justify-content:space-between;gap:5px}
+.skills-head h2{font-size:17px;color:#eac783}
+.skills-head p{font-size:12px;color:var(--muted)}
+.skills-head button{min-height:35px}
+.skill-wheel{
+  width:min(100%,350px,calc(100dvh - 103px));min-width:min(100%,253px);
+  aspect-ratio:1;margin:auto;position:relative;isolation:isolate;
+}
+.skill-wheel::before{
+  content:"";position:absolute;inset:8%;border-radius:50%;z-index:-1;
+  background:repeating-conic-gradient(from -26deg,#414331 0deg 49deg,#71613c 50deg 51.42deg);
+  box-shadow:0 0 0 1px #ad9461,inset 0 0 23px #24281e;
+}
+.skill-core{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:31%;aspect-ratio:1;
+  display:grid;align-content:center;text-align:center;border:1px solid #958052;border-radius:50%;
+  background:#262b22;color:#edcc89;font-size:12px;pointer-events:none;
+}
+.skill-core span{font:23px monospace}
+.skill-choice{
+  position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);
+  display:grid;grid-template-columns:1fr;align-content:center;gap:1px;width:29%;
+  min-height:52px;padding:2px;color:var(--paper);background:#333a2e;border-color:#86734b;
+}
+.skill-choice b,.skill-choice small{line-height:1.17}
+.skill-choice b{font-size:12px}.skill-choice small{font:700 11px monospace;color:#efd69b}
+.skill-choice:disabled{opacity:.62}
+.skill-choice[data-state="ready"]{color:#f3d18e;border-color:#d6b06d;background:#42432f}
+.skill-icon{font:700 14px monospace;color:#e7bd72;line-height:1}
+.skill-choice[data-state="cooldown"] small{color:#efb184}
+@media(max-width:450px){
+  .skill-tools button,.map-tools button{min-height:44px}
+  .skill-tools button{padding:3px 5px;font-size:11px}
+  .map-tools button{min-width:31px;padding:3px 4px}
+}
+
+#skill-detail{min-height:28px;color:var(--muted);text-align:center;font-size:12px}

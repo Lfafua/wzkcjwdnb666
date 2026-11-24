@@ -6,10 +6,11 @@
 <meta name="theme-color" content="#222620">
 <meta name="description" content="灰线 1917：七国一战战壕即时战术游戏">
 <title>灰线 1917 · 战壕指挥所</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=skills1">
 <script src="data.js" defer></script>
 <script src="terrain.js" defer></script>
-<script src="game.js" defer></script>
+<script src="game.js?v=skills1" defer></script>
+<script src="abilities.js" defer></script>
 </head>
 <body>
 <main id="shell">
@@ -36,6 +37,8 @@
 <div class="mapframe" id="mapframe">
 <canvas id="field" width="1024" height="576" aria-label="开放战场。拖框选中部队，或轻触选中。"></canvas>
 <div class="map-hud"><span id="mapname"></span><span id="zoom-label">1×</span></div>
+<div class="skill-tools"><button id="skills-open" type="button" aria-haspopup="dialog"><span aria-hidden="true">◈</span> 技能轮 <small id="skills-ready"></small></button><button id="artillery-shortcut" type="button" hidden>开炮</button></div>
+<div class="aim-banner" id="aim-banner" hidden><span id="aim-text" role="status"></span><button id="aim-cancel" type="button">取消</button></div>
 <div class="map-tools"><button id="zoom-in" type="button" aria-label="放大战场">＋</button><button id="zoom-out" type="button" aria-label="缩小战场">−</button><button id="pan" type="button" aria-pressed="false">平移</button></div>
 <div class="curtain" id="curtain" hidden><div><h2 id="result-title"></h2><p id="result-copy"></p><div class="result-actions"><button class="primary" id="result-main" type="button">继续作战</button><button id="return-setup" type="button">返回选国</button></div></div></div>
 </div>
@@ -47,6 +50,11 @@
 <div class="order-panel dispatch"><div class="row-title"><h3>战地电报</h3></div><div id="dispatch" role="status"></div></div>
 </aside></div>
 </section>
+<dialog id="skill-wheel" aria-labelledby="skills-title">
+<div class="skills-head"><div><h2 id="skills-title">兵种技能轮</h2><p>部署后解锁。每种技能独立冷却 15 秒。</p></div><form method="dialog"><button>关闭</button></form></div>
+<div class="skill-wheel" id="skill-slots"><div class="skill-core" aria-hidden="true"><span>◈</span><b>战术指令</b></div></div>
+<p id="skill-detail">选技能后，部分指令需要在战场上指定目标。</p>
+</dialog>
 <dialog id="archive"><div class="dialog-head"><div><h2>战地军械册</h2><p>历史资料与游戏数值分栏显示。</p></div><form method="dialog"><button>关闭</button></form></div><label>查阅国家 <select id="archive-nation"></select></label><div id="archive-content"></div></dialog>
 </main>
 </body>
