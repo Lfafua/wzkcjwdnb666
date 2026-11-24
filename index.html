@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#161914">
+<meta name="description" content="原创一战像素战壕策略游戏。调动分队、管理补给，夺取最后一道堑壕。">
+<title>灰线 1917 · 战壕战术</title>
+<style>
+:root{color-scheme:dark;--bg:#171a15;--panel:#23271d;--line:#444738;--ink:#e7e1c9;--muted:#b1b19a;--gold:#e6bd72;--green:#b6c58a;--red:#e98c70}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0,#303022 0,transparent 65%),var(--bg);color:var(--ink);font:15px/1.45 system-ui,"Microsoft YaHei",sans-serif}button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}button:disabled{cursor:default;opacity:.47}.shell{max-width:1200px;margin:auto;padding:0 22px 22px}.top{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:12px}.brand-mark{display:grid;place-items:center;width:40px;height:40px;border:1px solid #786c4c;color:var(--gold);background:#333124;font:24px monospace}.brand h1{margin:0;font-size:24px;letter-spacing:.11em}.brand h1 span{color:var(--gold);font:700 23px monospace}.top-tools{display:flex;gap:7px}.quiet,.lane,.segment{border:1px solid var(--line);background:#22251d;padding:7px 11px}.quiet:hover,.lane:hover,.segment:not(:disabled):hover{border-color:var(--gold)}.campaign{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:13px 0}.segment{text-align:left;min-width:0;display:flex;align-items:center;gap:9px}.segment small{color:var(--muted);font:700 12px monospace}.segment.current{border-color:#867248;background:#3a3323;color:var(--gold)}.segment.current small{color:var(--gold)}.brief{display:flex;justify-content:space-between;align-items:center;gap:14px;margin:0 0 9px}.brief h2{margin:0;font-size:19px}.brief p{margin:2px 0 0;color:var(--muted);font-size:13px}.stats{display:flex;gap:7px;flex:0 0 auto}.stat{padding:5px 9px;background:#292d22;border:1px solid var(--line);text-align:center;min-width:65px;color:var(--muted);font-size:12px}.stat b{display:block;font:700 17px monospace;color:var(--gold)}.stat:nth-child(2) b{color:var(--green)}.stat:last-child b{color:var(--red)}.field{position:relative;border:1px solid #756b50;overflow:hidden;background:#5a553a;box-shadow:0 12px 28px #0004}canvas{display:block;width:100%;height:auto;image-rendering:pixelated;touch-action:manipulation}.field-label{position:absolute;top:8px;padding:3px 7px;background:#15180fdf;color:var(--green);font-size:12px;pointer-events:none}.field-label.left{left:8px}.field-label.right{right:8px;color:#f1b49c}.overlay{position:absolute;inset:0;display:grid;place-items:center;background:#14160fa6;padding:10px}.overlay[hidden]{display:none}.paper{background:#22251bee;border:1px solid #b19a63;box-shadow:0 0 0 4px #1b1d16b0,0 12px 32px #0007;width:min(355px,95%);text-align:center;padding:17px 22px}.paper strong{display:block;font-size:clamp(22px,4vw,34px);letter-spacing:.1em;color:var(--gold)}.paper p{margin:5px 0 12px;color:var(--ink);font-size:14px}.primary{border:1px solid #f1c982;background:var(--gold);color:#211b10;padding:7px 19px;font-weight:800}.primary:hover{background:#f6d394}.orders{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:9px 0}.lanes{display:flex;gap:5px}.lane{padding:5px 10px}.lane[aria-pressed=true]{background:#3c432b;border-color:#909970;color:#dfedb7}.report{color:var(--ink);margin:0;text-align:right;font-size:13px}.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.card{background:linear-gradient(150deg,#2c3023,#22251c);border:1px solid var(--line);text-align:left;padding:8px 9px;min-width:0}.card:hover:not(:disabled){border-color:var(--gold);background:#383724}.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;gap:2px}.card-icon{width:24px;height:18px;image-rendering:pixelated}.key{font:700 11px monospace;color:var(--muted);border:1px solid var(--line);padding:1px 4px}.card b{display:block;font-size:14px}.card small{font-size:12px;color:var(--muted)}.card .price{color:var(--gold);font:700 12px monospace}.footer{padding-top:10px;color:var(--muted);font-size:12px}dialog{width:min(440px,calc(100% - 24px));background:#27291e;color:var(--ink);border:1px solid #9d895a;padding:19px}dialog::backdrop{background:#10120ddd}dialog h2{margin:0 0 7px;color:var(--gold)}dialog ul{padding-left:1.3em;margin:8px 0 15px}dialog li{margin:6px 0}@media(max-width:600px){.shell{padding:0 9px 12px}.top{min-height:57px}.brand{gap:7px}.brand-mark{width:31px;height:31px;font-size:19px}.brand h1,.brand h1 span{font-size:18px}.top-tools{gap:4px}.quiet{padding:5px;font-size:12px}.campaign{margin:8px 0;gap:4px}.segment{padding:5px;gap:4px;font-size:12px}.segment small{font-size:10px}.brief{align-items:flex-start;gap:4px}.brief h2{font-size:15px}.brief p,.stat{font-size:10px}.stats{gap:3px}.stat{padding:3px;min-width:37px}.stat b{font-size:13px}.field canvas{height:235px}.field-label{font-size:10px}.paper{padding:9px 12px}.paper p{font-size:12px}.orders{align-items:flex-start}.lane{padding:5px;font-size:12px;white-space:nowrap}.report{font-size:11px}.cards{grid-template-columns:repeat(3,1fr);gap:5px}.card{padding:5px 7px}.key{display:none}.card b,.card small{font-size:12px}.footer{font-size:11px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+<header class="top">
+<div class="brand"><span class="brand-mark" aria-hidden="true">╬</span><h1>灰线 <span>1917</span></h1></div>
+<div class="top-tools"><button class="quiet" id="sound" aria-pressed="false">静音</button><button class="quiet" id="pause" disabled>暂停</button><button class="quiet" id="help">玩法</button></div>
+</header>
+<nav class="campaign" id="campaign" aria-label="战役关卡"></nav>
+<section class="brief" aria-label="战况">
+<div><h2 id="mission"></h2><p id="objective"></p></div>
+<div class="stats"><div class="stat"><b id="supply">0</b>补给</div><div class="stat"><b id="ally">0</b>我方防线</div><div class="stat"><b id="enemy">0</b>敌方防线</div></div>
+</section>
+<section class="field" aria-label="战场">
+<canvas id="world" width="480" height="192" aria-label="三路战场。点击战场或下方路线按钮切换部署路线。"></canvas>
+<span class="field-label left">我方战壕</span><span class="field-label right">敌方战壕</span>
+<div class="overlay" id="overlay"><div class="paper"><strong id="overlay-title"></strong><p id="overlay-copy"></p><button class="primary" id="action">进入战场</button></div></div>
+</section>
+<div class="orders"><div class="lanes" aria-label="部署路线"></div><p class="report" id="report" role="status"></p></div>
+<div class="cards" id="cards" aria-label="军令"></div>
+<div class="footer">键盘 1–5 下令 · Q / W / E 切换路线 · 空格暂停</div>
+</main>
+<dialog id="rules"><h2>战地军令</h2><ul>
+<li>选择上、中、下路，再点兵种卡部署。补给随时间恢复。</li>
+<li>压制会让步兵停下来。机枪适合拖住敌人，迫击炮能攻击聚集的敌军。</li>
+<li>坦克更耐打。步兵和坦克抵达右侧壕沟后会持续削弱敌方防线。</li>
+<li>弹幕打击所选路线的敌方前线。敌军抵达左侧也会削弱你的防线。</li>
+</ul><form method="dialog"><button class="primary">返回战场</button></form></dialog>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const field = $('world');
+const ctx = field.getContext('2d');
+const ground = document.createElement('canvas');
+ground.width = field.width;
+ground.height = field.height;
+const terrain = ground.getContext('2d');
+const lanes = [47, 101, 155];
+const laneNames = ['上路', '中路', '下路'];
+const bases = [30, 450];
+const missions = [
+  {name:'白桦隘口', objective:'夺取白桦林尽头的敌方壕沟', terrain:['#6a6243','#92835a','#504d35'], weather:'clear', hp:75, cadence:8.5, supply:5.2, enemy:['rifle','rifle','mg']},
+  {name:'淹没的农庄', objective:'攻过被雨水切开的农田', terrain:['#585c44','#79856c','#414939'], weather:'rain', hp:96, cadence:7, supply:5.5, enemy:['rifle','mg','rifle','mortar']},
+  {name:'黑脊高地', objective:'突破敌军装甲增援，拿下高地', terrain:['#675344','#8f7356','#4e3e33'], weather:'ash', hp:118, cadence:6.1, supply:6, enemy:['rifle','mg','mortar','rifle','tank']}
+];
+const orders = {
+  rifle: {name:'步兵班', detail:'推进 · 占领', cost:24, hp:69, speed:14, range:48, hit:11, rate:1.08, siege:13, cooldown:2},
+  mg: {name:'重机枪组', detail:'远射 · 压制', cost:42, hp:50, speed:9, range:76, hit:7, rate:.42, siege:7, cooldown:5},
+  mortar: {name:'迫击炮组', detail:'越障 · 溅射', cost:56, hp:43, speed:8, range:117, hit:18, rate:3.1, siege:8, cooldown:8},
+  tank: {name:'早期坦克', detail:'装甲 · 突破', cost:90, hp:152, speed:10, range:62, hit:24, rate:2.05, siege:24, cooldown:16},
+  barrage: {name:'炮兵弹幕', detail:'打击所选路线', cost:64, cooldown:20}
+};
+const keys = Object.keys(orders);
+const cardButtons = [];
+const laneButtons = [];
+const missionButtons = [];
+let unlocked = 0;
+try { unlocked = Math.max(0, Math.min(2, Number(localStorage.getItem('greyline-unlocked')) || 0)); } catch {}
+let game, level = 0, last = 0, audio, resumeAfterHelp = false;
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let muted = true;
+
+function rect(g, x, y, w, h, color) {
+  g.fillStyle = color;
+  g.fillRect(Math.floor(x), Math.floor(y), w, h);
+}
+function rng(seed) {
+  return () => {
+    seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+    return seed / 4294967296;
+  };
+}
+function trench(g, x, shade) {
+  for (let y = 16; y < 192; y += 6) {
+    const shift = Math.floor(y / 14) % 2 * 5;
+    rect(g,x + shift - 4,y,23,7,'#3e3222');
+    rect(g,x + shift,y,16,7,'#211d16');
+    rect(g,x + shift + 2,y + 4,12,2,'#6e5c3c');
+    rect(g,x + shift - 4,y,4,5,'#ab9160');
+    rect(g,x + shift + 16,y,4,5,'#796749');
+  }
+  for (const y of lanes) {
+    rect(g,x - 5,y - 9,28,19,'#594a33');
+    rect(g,x - 2,y - 6,22,13,'#262218');
+    rect(g,x + 3,y + 5,15,3,'#9b8051');
+    rect(g,x + 7,y - 16,1,14,'#c1a77a');
+    rect(g,x + 8,y - 16,9,5,shade);
+  }
+}
+function paintGround() {
+  const m = missions[level];
+  const random = rng(1917 + level * 191);
+  rect(terrain,0,0,480,192,m.terrain[0]);
+  for (let i=0;i<1650;i++) {
+    rect(terrain,random()*480,random()*192,1+Math.floor(random()*7),1+Math.floor(random()*3),m.terrain[1+Math.floor(random()*2)]);
+  }
+  for (const y of lanes) {
+    for (let x=0;x<480;x+=8) {
+      const dy = Math.floor(2*Math.sin(x/21));
+      rect(terrain,x,y-7+dy,8,14,m.terrain[0]);
+      rect(terrain,x+2,y+5+dy,2,1,m.terrain[1]);
+    }
+  }
+  for (let i=0;i<32;i++) {
+    const x=60+random()*360, y=25+random()*158;
+    if (lanes.some(l=>Math.abs(l-y)<9)) continue;
+    const w=8+Math.floor(random()*14);
+    rect(terrain,x-2,y-3,w+4,6,m.terrain[1]);
+    rect(terrain,x,y-4,w,8,m.terrain[2]);
+    rect(terrain,x+2,y-2,w-4,5,level===1?'#555c51':'#3e3425');
+    rect(terrain,x+2,y+4,w-3,1,m.terrain[1]);
+  }
+  for (const x of [60, 406]) {
+    for (let y=24;y<187;y+=4) {
+      if (lanes.some(l=>Math.abs(l-y)<9)) continue;
+      rect(terrain,x+(y%8),y,6,1,'#35392b');
+      rect(terrain,x+3,y,1,4,'#ad9d77');
+    }
+  }
+  for (let i=0;i<13;i++) {
+    const x=74+random()*330, y=20+random()*162;
+    if (lanes.some(l=>Math.abs(l-y)<12)) continue;
+    rect(terrain,x-4,y+2,12,2,'#454332');
+    rect(terrain,x,y-9,2,13,level===0?'#b09e72':'#45392a');
+    rect(terrain,x-4,y-7,5,2,'#3e3c2a');
+    rect(terrain,x+1,y-5,6,2,'#3e3c2a');
+    rect(terrain,x+4,y-10,1,6,'#3e3c2a');
+  }
+  trench(terrain,19,'#adb77b');
+  trench(terrain,437,'#b97761');
+  rect(terrain,0,0,480,16,'#25271dbc');
+  rect(terrain,0,15,480,1,'#cdc39855');
+}
+function sprite(g, type, team, x, y, stride=0) {
+  const d = team === 0 ? 1 : -1;
+  const coat = team === 0 ? '#9ba671' : '#b4846d';
+  const shade = team === 0 ? '#586247' : '#6e5249';
+  const metal = '#383b31';
+  const box = (dx,dy,w,h,color)=>rect(g,x+(d===1?dx:-dx-w),y+dy,w,h,color);
+  if (type === 'barrage') {
+    box(-4,-1,8,3,'#eea66d');box(-2,-5,4,11,'#eea66d');box(-1,-2,2,5,'#fff0a5');
+  } else if (type === 'tank') {
+    box(-11,2,22,5,'#262821');box(-9,6,18,2,'#191a15');
+    box(-10,-3,20,5,shade);box(-7,-6,12,4,coat);
+    box(4,-2,8,2,metal);box(-7,3,3,2,coat);box(-1,3,3,2,coat);box(5,3,3,2,coat);
+    box(-5,-5,3,1,'#c5bf92');
+  } else {
+    box(-5,5,11,2,'#25251c');
+    box(-3,1,2,4+stride,metal);box(1,1,2,4-stride,metal);
+    box(-4,-3,6,5,coat);box(-5,-2,2,4,shade);
+    box(-2,-6,4,3,'#d9ba8d');box(-4,-8,7,2,shade);box(-5,-6,8,1,shade);
+    if (type==='mortar') {
+      box(3,3,6,2,metal);box(5,0,2,4,metal);box(6,-3,2,4,metal);
+    } else {
+      box(1,-2,type==='mg'?10:7,2,metal);box(3,-1,2,2,'#bd9a74');
+      if (type==='mg') box(7,0,1,4,metal);
+    }
+  }
+}
+function reset(n, state='ready') {
+  level = n;
+  game = {
+    state, time:0, selected:1, supply:90, hp:[100,missions[n].hp],
+    units:[], fx:[], strikes:[], cooldowns:{}, nextWave:5.5, waves:0,
+    report:'选择路线，部署第一支分队。'
+  };
+  makeUnit('rifle',0,1,49);
+  makeUnit('rifle',1,1,419);
+  paintGround();
+  refresh();
+}
+function makeUnit(type, team, lane, x) {
+  const spec = orders[type];
+  game.units.push({type, team, lane, x, hp:spec.hp, reload:.5, stun:0, suppression:0, walking:false});
+}
+function chooseLane(lane) {
+  game.selected=lane;
+  refresh();
+}
+function playSound(kind) {
+  if (muted || !audio || audio.state!=='running') return;
+  const osc=audio.createOscillator(), gain=audio.createGain(), t=audio.currentTime;
+  osc.type=kind==='blast'?'triangle':'square';
+  osc.frequency.setValueAtTime(kind==='blast'?110:230,t);
+  osc.frequency.exponentialRampToValueAtTime(kind==='blast'?32:125,t+.14);
+  gain.gain.setValueAtTime(kind==='blast'?.11:.022,t);
+  gain.gain.exponentialRampToValueAtTime(.0001,t+.17);
+  osc.connect(gain).connect(audio.destination);
+  osc.start(t);
+  osc.stop(t+.18);
+}
+function deploy(type) {
+  const data=orders[type], lane=game.selected;
+  if (game.state!=='playing' || game.supply<data.cost || game.cooldowns[type]>game.time) return;
+  game.supply-=data.cost;
+  game.cooldowns[type]=game.time+data.cooldown;
+  if (type==='barrage') {
+    const foes = game.units.filter(u=>u.team===1 && u.lane===lane && u.hp>0);
+    const center = foes.length ? Math.min(...foes.map(u=>u.x)) : 425;
+    for (let i=0;i<3;i++) game.strikes.push({at:game.time+.65+i*.32,x:Math.max(34,Math.min(446,center+(i-1)*13)),lane});
+    game.report=laneNames[lane]+'炮击已呼叫。';
+  } else {
+    makeUnit(type,0,lane,49);
+    game.report=laneNames[lane]+' · '+data.name+'已部署。';
+  }
+  playSound('order');
+  refresh();
+}
+function burst(x,lane,team,damage,radius) {
+  game.fx.push({type:'blast',x,y:lanes[lane],age:0,life:.55});
+  for (const u of game.units) {
+    if (u.team!==team && u.lane===lane && Math.abs(u.x-x)<=radius) {
+      u.hp-=damage;
+      u.suppression+=.6;
+    }
+  }
+  playSound('blast');
+}
+function advance(dt) {
+  game.time+=dt;
+  game.supply=Math.min(150,game.supply+dt*missions[level].supply);
+  if (game.time>=game.nextWave) {
+    const m=missions[level], wave=game.waves++;
+    const lane=(wave*2+level)%3;
+    makeUnit(m.enemy[wave%m.enemy.length],1,lane,431);
+    if (wave>=3 && wave%3===0) makeUnit('rifle',1,(lane+1)%3,431);
+    game.nextWave+=Math.max(4.2,m.cadence-wave*.14);
+  }
+  for (const strike of game.strikes) {
+    if (strike.at<=game.time) {
+      burst(strike.x,strike.lane,0,30,17);
+      if (strike.x>=408) game.hp[1]-=2;
+    }
+  }
+  game.strikes=game.strikes.filter(s=>s.at>game.time);
+  for (const u of game.units) {
+    if (u.hp<=0) continue;
+    const s=orders[u.type], direction=u.team===0?1:-1;
+    u.walking=false;
+    u.reload-=dt;
+    u.stun=Math.max(0,u.stun-dt);
+    u.suppression=Math.max(0,u.suppression-dt*.45);
+    if (u.suppression>1 && u.type!=='tank') {
+      u.stun=.95;
+      u.suppression=.25;
+    }
+    if (u.stun>0) continue;
+    let target, distance=s.range;
+    for (const other of game.units) {
+      if (other.team===u.team || other.lane!==u.lane || other.hp<=0) continue;
+      const gap=Math.abs(other.x-u.x);
+      if (gap<distance) { target=other; distance=gap; }
+    }
+    if (target) {
+      if (u.reload>0) continue;
+      u.reload=s.rate;
+      if (u.type==='mortar') {
+        burst(target.x,u.lane,u.team,s.hit,21);
+      } else {
+        target.hp-=s.hit*(target.type==='tank' && u.type!=='tank'?.43:1);
+        target.suppression+=u.type==='mg'?.44:.17;
+        game.fx.push({type:'shot',x:u.x,to:target.x,y:lanes[u.lane]-2,age:0,life:.12});
+      }
+    } else {
+      const base=bases[1-u.team];
+      if ((base-u.x)*direction<=15) {
+        if (u.reload<=0) {
+          game.hp[1-u.team]-=s.siege;
+          u.reload=1.65;
+          game.fx.push({type:'blast',x:base,y:lanes[u.lane],age:0,life:.45});
+        }
+      } else {
+        u.x+=direction*s.speed*dt;
+        u.walking=true;
+      }
+    }
+  }
+  for (const u of game.units) {
+    if (u.hp<=0) game.fx.push({type:'dust',x:u.x,y:lanes[u.lane],age:0,life:.42});
+  }
+  game.units=game.units.filter(u=>u.hp>0);
+  for (const effect of game.fx) effect.age+=dt;
+  game.fx=game.fx.filter(f=>f.age<f.life);
+  if (game.hp[0]<=0) {
+    game.state='lost';
+    game.report='我方防线被突破。';
+  } else if (game.hp[1]<=0) {
+    game.state='won';
+    game.report='敌方防线已被夺取。';
+    unlocked=Math.max(unlocked,Math.min(level+1,2));
+    try { localStorage.setItem('greyline-unlocked',String(unlocked)); } catch {}
+  }
+}
+function draw() {
+  ctx.drawImage(ground,0,0);
+  const y=lanes[game.selected];
+  rect(ctx,40,y-13,399,26,'#ecdeb00e');
+  for (let x=41;x<439;x+=7) {
+    rect(ctx,x,y-13,3,1,'#e3d6a477');rect(ctx,x,y+12,3,1,'#e3d6a477');
+  }
+  const unitSlots=new Map();
+  for (const u of game.units) {
+    const slot=u.team*3+u.lane, offset=unitSlots.get(slot)||0;
+    unitSlots.set(slot,offset+1);
+    const yy=lanes[u.lane]+[0,-4,4][offset%3];
+    const stride=u.walking&&!reduceMotion?Math.floor(game.time*7)%3-1:0;
+    sprite(ctx,u.type,u.team,u.x,yy,stride);
+    if (u.hp<orders[u.type].hp) {
+      rect(ctx,u.x-5,yy-12,10,1,'#332d23');
+      rect(ctx,u.x-5,yy-12,Math.max(1,Math.round(10*u.hp/orders[u.type].hp)),1,u.team===0?'#d8e5a6':'#e7a589');
+    }
+    if (u.stun>0) rect(ctx,u.x-1,yy-15,3,1,'#f6cd74');
+  }
+  for (const f of game.fx) {
+    const scale=f.age/f.life;
+    if (f.type==='shot') {
+      const travel=f.x+(f.to-f.x)*scale;
+      rect(ctx,travel-3,f.y,7,1,'#f1dba1');
+    } else {
+      const r=reduceMotion?4:Math.floor(scale*12)+2;
+      rect(ctx,f.x-r,f.y-2,r*2,4,f.type==='blast'?'#c58450':'#675b42');
+      rect(ctx,f.x-2,f.y-r,4,r*2,f.type==='blast'?'#e6b175':'#766749');
+      if (f.type==='blast'&&scale<.3) rect(ctx,f.x-3,f.y-3,6,6,'#fff0ae');
+    }
+  }
+  if (missions[level].weather!=='clear'&&!reduceMotion) {
+    for (let i=0;i<52;i++) {
+      const rain=missions[level].weather==='rain';
+      const dx=(i*107+game.time*(rain?37:9))%480;
+      const dy=(i*59+game.time*(rain?85:4))%176+16;
+      rect(ctx,dx,dy,1,rain?3:1,rain?'#c5d4c04c':'#d0ae885c');
+    }
+  }
+}
+function setText(id, value) {
+  const element=$(id), text=String(value);
+  if (element.textContent!==text) element.textContent=text;
+}
+function refresh() {
+  const {state,selected,supply,hp,time,cooldowns,report}=game;
+  const m=missions[level];
+  setText('mission',m.name);
+  setText('objective',m.objective);
+  setText('supply',Math.floor(supply));
+  setText('ally',Math.max(0,hp[0])+'%');
+  setText('enemy',Math.max(0,Math.ceil(hp[1]/m.hp*100))+'%');
+  setText('report',report);
+  $('pause').disabled=!['playing','paused'].includes(state);
+  setText('pause',state==='paused'?'继续':'暂停');
+  for (const [i,button] of laneButtons.entries()) {
+    const value=String(i===selected);
+    if(button.getAttribute('aria-pressed')!==value) button.setAttribute('aria-pressed',value);
+  }
+  for (const [i,button] of missionButtons.entries()) {
+    button.disabled=i>unlocked;
+    button.classList.toggle('current',i===level);
+    if(i===level) button.setAttribute('aria-current','step');
+    else button.removeAttribute('aria-current');
+  }
+  for (const [i,type] of keys.entries()) {
+    const {button,price}=cardButtons[i];
+    const remaining=Math.max(0,Math.ceil((cooldowns[type]||0)-time));
+    button.disabled=state!=='playing'||supply<orders[type].cost||remaining>0;
+    const value=remaining>0?remaining+'s':String(orders[type].cost);
+    if(price.textContent!==value) price.textContent=value;
+  }
+  $('overlay').hidden=state==='playing';
+  const copy={
+    ready:[m.name,'分兵推进，率先摧毁对方防线。','进入战场'],
+    paused:['战斗暂停','准备好后继续下令。','继续战斗'],
+    lost:['防线失守','重新分配兵力，守住侧翼。','重试关卡'],
+    won:level===2?['战役胜利','三处阵地均已夺取。','再打一场']:['阵地夺取','下一关已解锁。','下一关']
+  }[state];
+  if (copy) {
+    for (const [i,id] of ['overlay-title','overlay-copy','action'].entries()) setText(id,copy[i]);
+  }
+}
+function togglePause() {
+  if (game.state==='playing') game.state='paused';
+  else if (game.state==='paused') game.state='playing';
+  refresh();
+}
+for (const [i,m] of missions.entries()) {
+  const button=document.createElement('button');
+  button.className='segment';
+  const number=document.createElement('small');
+  number.textContent='0'+(i+1);
+  button.append(number,m.name);
+  button.onclick=()=>{ if(i<=unlocked&&i!==level) reset(i); };
+  $('campaign').append(button);
+  missionButtons.push(button);
+}
+for (const [i,name] of laneNames.entries()) {
+  const button=document.createElement('button');
+  button.className='lane';
+  button.textContent=name;
+  button.onclick=()=>chooseLane(i);
+  document.querySelector('.lanes').append(button);
+  laneButtons.push(button);
+}
+for (const [i,type] of keys.entries()) {
+  const button=document.createElement('button');
+  const info=orders[type];
+  button.className='card';
+  button.innerHTML='<div class="card-head"><canvas class="card-icon" width="24" height="18" aria-hidden="true"></canvas><span class="key">'+(i+1)+'</span><span class="price"></span></div><b>'+info.name+'</b><small>'+info.detail+'</small>';
+  sprite(button.querySelector('canvas').getContext('2d'),type,0,12,9);
+  button.onclick=()=>deploy(type);
+  $('cards').append(button);
+  cardButtons.push({button,price:button.querySelector('.price')});
+}
+$('action').onclick=()=>{
+  if(game.state==='won') reset(level===2?0:level+1,'playing');
+  else if(game.state==='lost') reset(level,'playing');
+  else { game.state='playing'; refresh(); }
+};
+$('pause').onclick=togglePause;
+$('sound').onclick=()=>{
+  if(muted) {
+    const Audio=window.AudioContext||window.webkitAudioContext;
+    if(!Audio) { $('sound').disabled=true; return; }
+    audio ||= new Audio();
+    audio.resume().catch(()=>{});
+  }
+  muted=!muted;
+  $('sound').setAttribute('aria-pressed',String(!muted));
+  setText('sound',muted?'静音':'音效开启');
+};
+$('help').onclick=()=>{
+  resumeAfterHelp=game.state==='playing';
+  if(resumeAfterHelp) togglePause();
+  $('rules').showModal();
+};
+$('rules').addEventListener('close',()=>{
+  if(resumeAfterHelp&&game.state==='paused') togglePause();
+  resumeAfterHelp=false;
+});
+field.addEventListener('pointerdown',event=>{
+  const box=field.getBoundingClientRect();
+  const position=(event.clientY-box.top)*field.height/box.height;
+  const closest=lanes.reduce((best,y,i)=>Math.abs(y-position)<Math.abs(lanes[best]-position)?i:best,0);
+  chooseLane(closest);
+});
+document.addEventListener('keydown',e=>{
+  if(e.repeat||e.altKey||e.ctrlKey||e.metaKey||$('rules').open) return;
+  const route=['q','w','e'].indexOf(e.key.toLowerCase());
+  if(route>=0) chooseLane(route);
+  if(/^[1-5]$/.test(e.key)) deploy(keys[Number(e.key)-1]);
+  if(e.code==='Space'&&!(e.target instanceof HTMLButtonElement)) {
+    e.preventDefault();togglePause();
+  }
+});
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden&&game.state==='playing') togglePause();
+});
+reset(0);
+let lastRefresh=0;
+function frame(now) {
+  const dt=Math.min(.05,(now-last)/1000);
+  last=now;
+  if(game.state==='playing') advance(dt);
+  if(game.state!=='playing'||now-lastRefresh>100) {
+    refresh();
+    lastRefresh=now;
+  }
+  draw();
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
