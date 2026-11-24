@@ -70,3 +70,38 @@ dialog{width:min(780px,calc(100% - 20px));max-height:88dvh;overflow:auto;backgro
 }
 
 #skill-detail{min-height:28px;color:var(--muted);text-align:center;font-size:12px}
+
+#battle-report {
+  width:min(630px,calc(100vw - 20px));max-height:calc(100dvh - 18px);
+  padding:4px;border:1px solid #a79157;background:#23271d;box-shadow:0 0 48px #0009;
+}
+.campaign-report {border:1px solid #6c6041}
+.report-heading {
+  padding:20px 16px 15px;text-align:center;border-bottom:1px solid #82734a;
+  background:linear-gradient(180deg,#302e21,#24271d);
+}
+#report-location {color:#c5bca2;font:700 12px monospace;letter-spacing:.14em}
+#report-status {
+  display:inline-block;color:#f1ca79;border-block:1px solid #a7864d;
+  margin:11px 0 5px;padding:3px 11px;letter-spacing:.26em;font-size:13px;
+}
+#battle-report[data-outcome="defeat"] #report-status {color:#ed9982;border-color:#af6f5d}
+#report-title {font-size:clamp(23px,6vw,43px);letter-spacing:.10em;color:#f2deaa}
+.report-flags {display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;font-size:12px}
+.report-body {padding:12px 14px}
+#report-summary {font-size:15px;line-height:1.55;color:#e9e0c6}
+.report-method {display:flex;justify-content:space-between;margin:9px 0 7px;border-block:1px solid #685e42;padding:6px 0}
+.report-method span {color:#c5bca2}
+.report-method strong {color:#efc67a}
+.report-ledger {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.report-ledger section {background:#272e23;border:1px solid #485040;padding:7px}
+.report-ledger h3 {font-size:14px;color:#c8d8a4;margin-bottom:4px}
+.report-ledger section+section h3 {color:#e9b39c}
+.report-ledger p {font-size:12px;color:#cec8ad;line-height:1.55}
+.report-actions {display:flex;justify-content:flex-end;gap:6px;margin-top:10px}
+.skill-choice[data-state="lost"] small {color:#e5a893}
+@media(max-height:470px){
+  .report-heading {padding:8px 10px}
+  #report-status {margin:5px 0 2px}
+  .report-body {padding:8px 11px}
+}

@@ -91,20 +91,20 @@ const fieldEquipment = {
 for(const [id,nation] of Object.entries(countries))nation.kit.push(...fieldEquipment[id]);
 
 const roles = {
-  rifle:{label:'步兵班', count:5, cost:38, hp:42, speed:39, range:107, damage:11, interval:1.20, pressure:.16, siege:3},
-  light:{label:'机动火力组', count:3, cost:49, hp:40, speed:35, range:119, damage:8, interval:.56, pressure:.25, siege:4},
-  heavy:{label:'重机枪组', count:2, cost:62, hp:55, speed:25, range:167, damage:10, interval:.45, pressure:.36, siege:5},
-  guns:{label:'曲射支援组', count:1, cost:72, hp:68, speed:24, range:245, damage:29, interval:3.20, pressure:.45, siege:12, blast:28},
-  grenadier:{label:'投弹组', count:3, cost:53, hp:49, speed:45, range:68, damage:21, interval:2.5, pressure:.34, siege:6, blast:20},
-  fieldGun:{label:'直射炮组', count:1, cost:84, hp:82, speed:20, range:198, damage:32, interval:2.6, pressure:.48, siege:15, antiArmor:true},
-  tankRifle:{label:'反装甲射手', count:2, cost:78, hp:50, speed:31, range:176, damage:18, interval:1.9, pressure:.21, siege:6, antiArmor:true},
-  tank:{label:'装甲分队', count:1, cost:124, hp:330, speed:24, range:158, damage:25, interval:1.48, pressure:.48, siege:19, armor:true},
-  lightTank:{label:'轻装甲分队', count:1, cost:108, hp:245, speed:34, range:149, damage:26, interval:1.53, pressure:.37, siege:15, armor:true},
-  heavyTank:{label:'重装甲分队', count:1, cost:132, hp:375, speed:19, range:171, damage:35, interval:2.05, pressure:.52, siege:22, armor:true},
-  car:{label:'装甲侦察分队', count:1, cost:95, hp:177, speed:42, range:132, damage:15, interval:.57, pressure:.34, siege:13, armor:true},
-  raider:{label:'突击队', count:5, cost:91, hp:58, speed:54, range:82, damage:20, interval:.67, pressure:.27, siege:8},
-  automatic:{label:'自动步枪班', count:4, cost:105, hp:54, speed:42, range:131, damage:13, interval:.48, pressure:.31, siege:7},
-  mountainGun:{label:'山炮分队', count:1, cost:99, hp:94, speed:30, range:264, damage:41, interval:2.75, pressure:.60, siege:18, blast:35}
+  rifle:{label:'步兵班', count:5, cost:38, hp:42, speed:39, range:107, damage:11, interval:1.20, pressure:.16},
+  light:{label:'机动火力组', count:3, cost:49, hp:40, speed:35, range:119, damage:8, interval:.56, pressure:.25},
+  heavy:{label:'重机枪阵地', count:1, cost:62, hp:85, speed:0, emplacement:true, range:167, damage:10, interval:.45, pressure:.36},
+  guns:{label:'后方炮兵', count:0, offboard:true, cost:72, hp:68, speed:24, range:245, damage:29, interval:3.20, pressure:.45, blast:28},
+  grenadier:{label:'投弹组', count:3, cost:53, hp:49, speed:45, range:68, damage:21, interval:2.5, pressure:.34, blast:20},
+  fieldGun:{label:'后方直射炮', count:0, offboard:true, cost:84, hp:82, speed:20, range:198, damage:32, interval:2.6, pressure:.48, antiArmor:true},
+  tankRifle:{label:'反装甲射手', count:2, cost:78, hp:50, speed:31, range:176, damage:18, interval:1.9, pressure:.21, antiArmor:true},
+  tank:{label:'装甲分队', count:1, cost:124, hp:330, speed:24, range:158, damage:25, interval:1.48, pressure:.48, armor:true},
+  lightTank:{label:'轻装甲分队', count:1, cost:108, hp:245, speed:34, range:149, damage:26, interval:1.53, pressure:.37, armor:true},
+  heavyTank:{label:'重装甲分队', count:1, cost:132, hp:375, speed:19, range:171, damage:35, interval:2.05, pressure:.52, armor:true},
+  car:{label:'装甲侦察分队', count:1, cost:95, hp:177, speed:42, range:132, damage:15, interval:.57, pressure:.34, armor:true},
+  raider:{label:'突击队', count:5, cost:91, hp:58, speed:54, range:82, damage:20, interval:.67, pressure:.27},
+  automatic:{label:'自动步枪班', count:4, cost:105, hp:54, speed:42, range:131, damage:13, interval:.48, pressure:.31},
+  mountainGun:{label:'后方山炮', count:0, offboard:true, cost:99, hp:94, speed:30, range:264, damage:41, interval:2.75, pressure:.60, blast:35}
 };
 
 const battlefields = [
